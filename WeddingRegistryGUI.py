@@ -4,7 +4,7 @@ display_page_query="select * from items where QTYDesired>0;"
 def send_login_page():
     top=TK.Tk()
     top.title('GiftRegistry')
-    top.geometry('647x400') #Golden Ratio
+    top.geometry('243x150') #Golden Ratio
     username_label=TK.Label(top,text="username")
     password_label=TK.Label(top,text="password")
     error_label=TK.Label(top,text="")
