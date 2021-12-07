@@ -10,7 +10,7 @@ def send_login_page():
     error_label=TK.Label(top,text="")
     user_box=TK.Entry(top)
     pass_box=TK.Entry(top)
-    button=TK.Button(top,text="login",command=lambda:attempt_login(user_box.get(),pass_box.get(),error_label))
+    button=TK.Button(top,text="login",command=lambda:attempt_login(user_box.get(),pass_box.get(),error_label,top))
     username_label.pack()
     user_box.pack()
     password_label.pack()
@@ -19,14 +19,15 @@ def send_login_page():
     error_label.pack()
     top.mainloop()
 
-def attempt_login(username:str,password:str,errorOut:TK.Label):
+def attempt_login(username:str,password:str,errorOut:TK.Label,prevWind:TK):
     if(authenticate_user(username,password)):
+        prevWind.destroy()
         display_page()
     else:
         errorOut.config(text = "Incorrect username and/or password.", fg='#A33')
 
 def authenticate_user(username:str,password:str):
-    return False
+    return True
     #raise NotImplementedError
 
 def display_page():
