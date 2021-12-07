@@ -38,6 +38,4 @@ insert into setting(field, value) values
 	('theme', 'dark');
 
 create extention pgcrypto;
-insert into users(PWhash, username, privLevel) values (
-	crypt('badPasword', gen_salt('bf')),
-);
+insert into users(PWhash, username, privLevel) values (crypt('badPasword', gen_salt('bf')), 'admin', 0);
