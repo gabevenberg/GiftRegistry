@@ -27,8 +27,20 @@ def read_config(configFile):
         logging.debug(f'{config=}')
 
 if __name__ == '__main__':
-    import WeddingRegistryGUI
+    import WeddingRegistryGUI, databaseInteraction
     configFile, UImode=parse_arguments()
     config=read_config(configFile)
-    if UImode=='GUI':
-        WeddingRegistryGUI.send_login_page()
+    #if UImode=='GUI':
+    #    WeddingRegistryGUI.send_login_page()
+    connection=databaseInteraction.connect(
+        config['dbHost'],
+        config['dbName'],
+        config['dbUser'],
+        config['dbPass'],
+        config['dbPort']
+    )
+    try:
+        #rest of the program goes here.
+    finally:
+        #this makes sure that the db connection is properly closed.
+        connection.close()
