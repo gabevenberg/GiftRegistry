@@ -25,13 +25,13 @@ def read_config(configFile):
     with open(configFile, 'r') as jsonFile:
         config = json.load(jsonFile)
         logging.debug(f'{config=}')
+        return config
 
 if __name__ == '__main__':
     import WeddingRegistryGUI, databaseInteraction
     configFile, UImode=parse_arguments()
+    #I know global variables are discoraged, but these are the only two we will be using. (besides, these were technically already global, I just made it explicit.)
     config=read_config(configFile)
-    #if UImode=='GUI':
-    #    WeddingRegistryGUI.send_login_page()
     connection=databaseInteraction.connect(
         config['dbHost'],
         config['dbName'],
@@ -41,6 +41,11 @@ if __name__ == '__main__':
     )
     try:
         #rest of the program goes here.
+        #if UImode=='GUI':
+        #    WeddingRegistryGUI.send_login_page()
+        with connection.cursor() as cur:
+            cur.execute('select * from users;')
+            print(cur.fetchall())
     finally:
         #this makes sure that the db connection is properly closed.
         connection.close()

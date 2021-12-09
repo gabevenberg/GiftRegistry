@@ -1,4 +1,5 @@
 import tkinter as TK
+import databaseInteraction
 
 display_page_query="select * from items where QTYDesired>0;"
 def send_login_page():
