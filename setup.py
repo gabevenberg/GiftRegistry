@@ -26,7 +26,7 @@ if __name__ == '__main__':
     configFile=parse_arguments()
     #I know global variables are discoraged, but these are the only two we will be using. (besides, these were technically already global, I just made it explicit.)
     config=read_config(configFile)
-    connection=appDatabase(
+    DB=appDatabase(
         config['dbHost'],
         config['dbName'],
         config['dbUser'],
@@ -37,9 +37,7 @@ if __name__ == '__main__':
         #rest of the program goes here.
         #if config.uiMode=='GUI':
         #    WeddingRegistryGUI.send_login_page()
-        with connection.conn.cursor() as cur:
-            cur.execute('select * from users;')
-            print(cur.fetchall())
+        print(DB.getUnpurchasedGifts())
     finally:
         #this makes sure that the db connection is properly closed.
-        connection.close()
+        DB.close()

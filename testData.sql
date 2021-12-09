@@ -52,8 +52,10 @@ insert into items (purchaseLink, itemDesc, priority, QTYDesired) values
 	('https://smile.amazon.com/upsimples-Picture-Display-Pictures-Without/dp/B07VQZSLDW/', '11x14 Picture Frames', 5, 2), --itemID 1
 	('https://smile.amazon.com/Zinus-Ironline-Platform-Headboard-Optional/dp/B075FGY7G2/', 'Queen size bed frame', 1, 1), --itemID 2
 	('https://www.betterworldbooks.com/product/detail/Dune-9780441013593', 'Dune, by frank herbert', 2, 1), -- itemID 3
-	('https://www.target.com/p/0-4-34-x-1-5-34-12pk-unscented-tealight-candle-set-white-made-by-design-8482/-/A-54518130', 'Tealight candles', 5, 3); --itemID 4
+	('https://www.target.com/p/0-4-34-x-1-5-34-12pk-unscented-tealight-candle-set-white-made-by-design-8482/-/A-54518130', 'Tealight candles', 5, 5); --itemID 4
 
 insert into purchase (QTYpurchased, datePurchased, userID, itemID) values
 	(1, timestamp '2021-12-05 13:25:12', 3, 1),
-	(1, timestamp '2021-11-12 10:36:49', 3, 2);
+	(1, timestamp '2021-12-05 13:25:60', 3, 1),
+	(1, timestamp '2021-11-12 10:36:49', 3, 4),
+	(2, timestamp '2021-11-12 10:36:50', 3, 4);
