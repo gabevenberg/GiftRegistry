@@ -17,12 +17,12 @@ class appDatabase:
     def getUnpurchasedGifts(self):
         with self.cursor() as cur:
             cur.execute('''
-            select * from (
-            select purchaselink, itemdesc, priority, thumbnail, qtydesired, sum(qtypurchased)
-            from items inner join purchase on items.itemid=purchase.itemid
-            group by purchaselink, itemdesc, priority, thumbnail, qtydesired
-            order by priority
-            ) as getsum
-            where sum<qtydesired;
+                select * from (
+                select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
+                from items left join purchase on items.itemid=purchase.itemid
+                group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
+                order by priority
+                ) as getsum
+                where qtyleft>0;
             ''')
             return cur.fetchall()
