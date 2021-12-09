@@ -1,6 +1,7 @@
 #handles connecting to the database and running queries
 import psycopg2
 import psycopg2.extras
+import logging
 
 class appDatabase:
     #if you dont need to set these, pass empty strings. Seems to work just fine.
@@ -26,6 +27,15 @@ class appDatabase:
                 where qtyleft>0;
             ''')
             return cur.fetchall()
+
+    def purchaseItem(self, itemID, userID, qtyPurchased):
+        with self.cursor() as cur:
+            cur.execute('''
+                insert into purchase (itemID, userID, QTYpurchased, datePurchased)
+                values (%s, %s, %s, current_timestamp)
+                ''',
+                (itemID, userID, qtyPurchased))
+            logging.debug(f'inserted {itemID=}, {userID=}, {qtyPurchased=} into purchase database')
 
     #test function, please ignore
     #NOTE will destroy your database!!! used only to reset to known state between tests.

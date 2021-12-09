@@ -2,6 +2,7 @@
 
 import argparse, json, logging
 from pathlib import Path
+from pprint import pprint
 
 #logging.basicConfig(format='%(asctime)s:%(message)s', level=logging.INFO)
 logging.basicConfig(format='%(asctime)s:%(message)s', level=logging.DEBUG)
@@ -37,8 +38,10 @@ if __name__ == '__main__':
         #rest of the program goes here.
         #if config.uiMode=='GUI':
         #    WeddingRegistryGUI.send_login_page()
-        print(DB.getUnpurchasedGifts())
         DB.populateWithTestData()
+        pprint(DB.getUnpurchasedGifts())
+        DB.purchaseItem(2, 3, 1)
+        pprint(DB.getUnpurchasedGifts())
     finally:
         #this makes sure that the db connection is properly closed.
         DB.close()
