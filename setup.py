@@ -38,6 +38,7 @@ if __name__ == '__main__':
         #if config.uiMode=='GUI':
         #    WeddingRegistryGUI.send_login_page()
         print(DB.getUnpurchasedGifts())
+        DB.populateWithTestData()
     finally:
         #this makes sure that the db connection is properly closed.
         DB.close()
