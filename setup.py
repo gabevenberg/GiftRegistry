@@ -11,9 +11,8 @@ def parse_arguments():
     parser.add_argument('configFile', type=Path, help='location of the JSON configuration file.', default='~/.config/GiftRegistry/config.json')
     args=parser.parse_args()
 
-        logging.debug(f'{args.configFile.resolve()=}')
-        logging.debug(f'{args.UImode=}')
-        return args.configFile.resolve(), args.UImode
+    logging.debug(f'{args.configFile.resolve()=}')
+    return args.configFile.resolve()
 
 def read_config(configFile):
     with open(configFile, 'r') as jsonFile:
@@ -22,11 +21,12 @@ def read_config(configFile):
         return config
 
 if __name__ == '__main__':
-    import WeddingRegistryGUI, databaseInteraction
+    import WeddingRegistryGUI
+    from databaseInteraction import appDatabase
     configFile=parse_arguments()
     #I know global variables are discoraged, but these are the only two we will be using. (besides, these were technically already global, I just made it explicit.)
     config=read_config(configFile)
-    connection=databaseInteraction.connect(
+    connection=appDatabase(
         config['dbHost'],
         config['dbName'],
         config['dbUser'],
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         #rest of the program goes here.
         #if config.uiMode=='GUI':
         #    WeddingRegistryGUI.send_login_page()
-        with connection.cursor() as cur:
+        with connection.conn.cursor() as cur:
             cur.execute('select * from users;')
             print(cur.fetchall())
     finally:
