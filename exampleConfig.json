@@ -1,0 +1,8 @@
+{
+	"dbHost": "localhost",
+	"dbName": "giftRegistry",
+	"dbUser": "giftRegistry",
+	"dbPass": "",
+	"dbPort": "",
+	"uiMode": "GUI"
+}
