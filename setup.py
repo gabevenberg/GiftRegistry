@@ -40,7 +40,7 @@ if __name__ == '__main__':
         #    WeddingRegistryGUI.send_login_page()
         DB.populateWithTestData()
         pprint(DB.getUnpurchasedGifts())
-        DB.purchaseItem(2, 3, 1)
+        print(DB.purchaseItem(2, 3, 1))
         pprint(DB.getUnpurchasedGifts())
         print(DB.validateUser('admin', 'badPasword'))
         print(DB.validateUser('admin', 'badPaswor'))

@@ -27,14 +27,15 @@ class appDatabase:
             ''')
             return cur.fetchall()
 
+    #returns purchaseID
     def purchaseItem(self, itemID, userID, qtyPurchased):
         with self.cursor() as cur:
             cur.execute('''
                 insert into purchase (itemID, userID, QTYpurchased, datePurchased)
-                values (%s, %s, %s, current_timestamp)
-                ''',
-                (itemID, userID, qtyPurchased))
+                values (%s, %s, %s, current_timestamp) returning purchaseid;
+                ''', (itemID, userID, qtyPurchased))
             logging.debug(f'inserted {itemID=}, {userID=}, {qtyPurchased=} into purchase database')
+            return cur.fetchone().purchaseid
     
     #returns boolean and the userid belonging to the username
     def validateUser(self, username, password):
