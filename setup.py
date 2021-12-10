@@ -42,6 +42,12 @@ if __name__ == '__main__':
         pprint(DB.getUnpurchasedGifts())
         DB.purchaseItem(2, 3, 1)
         pprint(DB.getUnpurchasedGifts())
+        print(DB.validateUser('admin', 'badPasword'))
+        print(DB.validateUser('admin', 'badPaswor'))
+        print(DB.validateUser('giftEditor', 'IWillTellLiesForPi'))
+        print(DB.validateUser('giftEditor', 'IWiliesForPi'))
+        print(DB.getPrivLevel(1))
+        print(DB.getPrivLevel(3))
     finally:
         #this makes sure that the db connection is properly closed.
         DB.close()

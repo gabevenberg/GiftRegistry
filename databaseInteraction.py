@@ -14,7 +14,6 @@ class appDatabase:
     def close(self):
         self.conn.close()
 
-    #TODO! get query working. Currently only returns items with at least one purchase.
     def getUnpurchasedGifts(self):
         with self.cursor() as cur:
             cur.execute('''
@@ -36,6 +35,24 @@ class appDatabase:
                 ''',
                 (itemID, userID, qtyPurchased))
             logging.debug(f'inserted {itemID=}, {userID=}, {qtyPurchased=} into purchase database')
+    
+    #returns boolean and the userid belonging to the username
+    def validateUser(self, username, password):
+        with self.cursor() as cur:
+            cur.execute('''
+            select pwhash=crypt(%s, pwhash) as verified, userid from users
+            where username=%s;
+            ''', (password, username))
+            res=cur.fetchone()
+            return res.verified, res.userid
+
+    #returns integer detailing users privLevel.
+    def getPrivLevel(self, userID):
+        with self.cursor() as cur:
+            cur.execute('''
+            select privlevel from users where userid=%s
+            ''', (userID,))
+            return cur.fetchone().privlevel
 
     #test function, please ignore
     #NOTE will destroy your database!!! used only to reset to known state between tests.

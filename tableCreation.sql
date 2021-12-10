@@ -39,4 +39,4 @@ insert into setting(field, value) values
 create extension if not exists pgcrypto;
 
 insert into users (PWhash, username, privlevel) values
-	(crypt('badPasword', gen_salt('bf')), 'admin', 0), --userID 1
+	(crypt('badPasword', gen_salt('bf')), 'admin', 0) --userID 1
