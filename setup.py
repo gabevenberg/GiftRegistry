@@ -48,6 +48,7 @@ if __name__ == '__main__':
         print(DB.validateUser('giftEditor', 'IWiliesForPi'))
         print(DB.getPrivLevel(1))
         print(DB.getPrivLevel(3))
+        print(DB.addUser('testPassword', 'testUser', 2))
     finally:
         #this makes sure that the db connection is properly closed.
         DB.close()

@@ -55,6 +55,15 @@ class appDatabase:
             ''', (userID,))
             return cur.fetchone().privlevel
 
+    #returns the userID of the new user
+    def addUser(self, password, username, privLevel):
+        with self.cursor() as cur:
+            cur.execute('''
+            insert into users (pwhash, username, privlevel)
+            values (%s, %s, %s) returning userID
+            ''', (password, username, privLevel))
+            return cur.fetchone().userid
+
     #test function, please ignore
     #NOTE will destroy your database!!! used only to reset to known state between tests.
     def populateWithTestData(self):
