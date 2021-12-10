@@ -25,6 +25,7 @@ class appDatabase:
                 ) as getsum
                 where qtyleft>0;
             ''')
+            self.conn.commit()
             return cur.fetchall()
 
     #returns purchaseID
@@ -35,6 +36,7 @@ class appDatabase:
                 values (%s, %s, %s, current_timestamp) returning purchaseid;
                 ''', (itemID, userID, qtyPurchased))
             logging.debug(f'inserted {itemID=}, {userID=}, {qtyPurchased=} into purchase database')
+            self.conn.commit()
             return cur.fetchone().purchaseid
     
     #returns boolean and the userid belonging to the username
@@ -45,6 +47,7 @@ class appDatabase:
             where username=%s;
             ''', (password, username))
             res=cur.fetchone()
+            self.conn.commit()
             return res.verified, res.userid
 
     #returns integer detailing users privLevel.
@@ -53,6 +56,7 @@ class appDatabase:
             cur.execute('''
             select privlevel from users where userid=%s
             ''', (userID,))
+            self.conn.commit()
             return cur.fetchone().privlevel
 
     #returns the userID of the new user
@@ -62,6 +66,8 @@ class appDatabase:
             insert into users (pwhash, username, privlevel)
             values (%s, %s, %s) returning userID
             ''', (password, username, privLevel))
+            self.conn.commit()
+            logging.debug(f'inserted {username=}, {privLevel=} into users table')
             return cur.fetchone().userid
 
     #returns the itemID of the new item
@@ -71,6 +77,7 @@ class appDatabase:
             insert into items (itemdesc, priority, qtydesired, purchaselink, thumbnail)
             values (%s, %s, %s, %s, %s) returning itemid;
             ''', (itemDescription, priority, qtyDesired, purchaseLink, thumbnailPath))
+            self.conn.commit()
             logging.debug(f'inserted {itemDescription=}, {priority=}, {qtyDesired=}, {purchaseLink=}, {thumbnailPath=} into items table')
             return cur.fetchone().itemid
 
@@ -141,3 +148,4 @@ class appDatabase:
                     (1, timestamp '2021-11-12 10:36:49', 3, 4),
                     (2, timestamp '2021-11-12 10:36:50', 3, 4);
                 ''')
+            self.conn.commit()
