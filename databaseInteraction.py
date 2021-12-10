@@ -64,6 +64,16 @@ class appDatabase:
             ''', (password, username, privLevel))
             return cur.fetchone().userid
 
+    #returns the itemID of the new item
+    def addItem(self, itemDescription, priority, qtyDesired, purchaseLink, thumbnailPath):
+        with self.cursor() as cur:
+            cur.execute('''
+            insert into items (itemdesc, priority, qtydesired, purchaselink, thumbnail)
+            values (%s, %s, %s, %s, %s) returning itemid;
+            ''', (itemDescription, priority, qtyDesired, purchaseLink, thumbnailPath))
+            logging.debug(f'inserted {itemDescription=}, {priority=}, {qtyDesired=}, {purchaseLink=}, {thumbnailPath=} into items table')
+            return cur.fetchone().itemid
+
     #test function, please ignore
     #NOTE will destroy your database!!! used only to reset to known state between tests.
     def populateWithTestData(self):

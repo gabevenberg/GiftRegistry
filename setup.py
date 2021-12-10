@@ -49,6 +49,12 @@ if __name__ == '__main__':
         print(DB.getPrivLevel(1))
         print(DB.getPrivLevel(3))
         print(DB.addUser('testPassword', 'testUser', 2))
+        print(DB.addItem('Pathfinder core rulebook',
+            5,
+            2,
+            'https://smile.amazon.com/Pathfinder-Core-Rulebook-Jason-Bulmahn/dp/1640781684/',
+        ''))
+        pprint(DB.getUnpurchasedGifts())
     finally:
         #this makes sure that the db connection is properly closed.
         DB.close()
