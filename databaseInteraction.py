@@ -35,7 +35,7 @@ class appDatabase:
                 insert into purchase (itemID, userID, QTYpurchased, datePurchased)
                 values (%s, %s, %s, current_timestamp) returning purchaseid;
                 ''', (itemID, userID, qtyPurchased))
-            logging.debug(f'inserted {itemID=}, {userID=}, {qtyPurchased=} into purchase database')
+            logging.debug(f'inserted {itemID}, {userID}, {qtyPurchased} into purchase database')
             self.conn.commit()
             return cur.fetchone().purchaseid
     
@@ -58,6 +58,7 @@ class appDatabase:
             ''', (userID,))
             self.conn.commit()
             return cur.fetchone().privlevel
+    
 
     #returns the userID of the new user
     def addUser(self, password, username, privLevel):
@@ -67,7 +68,7 @@ class appDatabase:
             values (%s, %s, %s) returning userID
             ''', (password, username, privLevel))
             self.conn.commit()
-            logging.debug(f'inserted {username=}, {privLevel=} into users table')
+            logging.debug(f'inserted {username}, {privLevel} into users table')
             return cur.fetchone().userid
 
     #returns the itemID of the new item
@@ -78,7 +79,7 @@ class appDatabase:
             values (%s, %s, %s, %s, %s) returning itemid;
             ''', (itemDescription, priority, qtyDesired, purchaseLink, thumbnailPath))
             self.conn.commit()
-            logging.debug(f'inserted {itemDescription=}, {priority=}, {qtyDesired=}, {purchaseLink=}, {thumbnailPath=} into items table')
+            logging.debug(f'inserted {itemDescription}, {priority}, {qtyDesired}, {purchaseLink}, {thumbnailPath} into items table')
             return cur.fetchone().itemid
 
     #test function, please ignore

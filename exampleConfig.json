@@ -2,7 +2,7 @@
 	"dbHost": "localhost",
 	"dbName": "giftRegistry",
 	"dbUser": "giftRegistry",
-	"dbPass": "",
-	"dbPort": "",
+	"dbPass": "whamdb9",
+	"dbPort": "5432",
 	"uiMode": "GUI"
 }
