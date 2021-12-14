@@ -13,7 +13,11 @@ class Field(Enum):
 class Order(Enum):
     ASCENDING=1
     DESCENDING=2
-def send_login_page():
+def send_login_page(inDB, inconfig):
+    global DB
+    global config
+    DB=inDB
+    config=inconfig
     top=TK.Tk()
     top.title('GiftRegistry')
     top.geometry('243x150') #Golden Ratio
@@ -31,22 +35,22 @@ def send_login_page():
     error_label.pack()
     top.mainloop()
 
-def filter_by_name(name:string):
-    data=databaseInteraction.appDatabase.fitlerByName(name)
+def filter_by_name(name:str):
+    data=DB.fitlerByName(name)
     display(data)
 def filter_by_priority(priority:int):
-    data=databaseInteraction.appDatabase.filterByPriority(priority)
+    data=DB.filterByPriority(priority)
     display(data)
 def filter_by_price(upper:int,lower:int):
-    data=databaseInteraction.appDatabase.filterByPrice(upper,lower)
+    data=DB.filterByPrice(upper,lower)
     display(data)
 def sort_entries(field:Field,order:Order):
-    data=databaseInteraction.appDatabase.sortEntries(field,order)
+    data=DB.sortEntries(field,order)
     display(data)
 def attempt_login(username:str,password:str,errorOut:TK.Label,prevWind:TK):
     if(authenticate_user(username,password)):
         prevWind.destroy()
-        display_page()
+        display_page(DB.getUnpurchasedGifts)
     else:
         errorOut.config(text = "Incorrect username and/or password.", fg='#A33')
 
@@ -67,7 +71,7 @@ def display_purchase_page(items_purchased:list):
 def display_page(data):
     row_offset=5
     root=TK.Tk()
-    default_button=TK.Button(root,"Return to default filters",command=display_page(databaseInteraction.getUnpurchasedGifts()))
+    default_button=TK.Button(root,"Return to default filters",command=display_page(DB.getUnpurchasedGifts()))
     checks=len(data)*[None]
     name_box=TK.Entry(root)
     name_button=TK.Button(root,text="Filter by Name",command=lambda:filter_by_name(name_box.get()))
@@ -94,12 +98,12 @@ def display_page(data):
     priority_button.grid(row=3,column=1)
     purchase_button.grid(row=4,column=0)
     #for each data item insert it into the grid
-    for i in range(len(data)):       
+    for i in range(len(data)):      
             check=TK.Checkbutton(var=checks[i])
             check.grid(row=i+row_offset,column=0)
-            for j in range(len(data[i])):   
+            for j in range(len(data[i])):  
                 e = TK.Entry(root, width=20, fg='blue',
-                               font=('Arial',16,'bold'))                 
+                               font=('Arial',16,'bold'))                
                 e.grid(row=i+row_offset, column=j+1)
                 e.insert(TK.END, data[i][j])
     root.mainloop()    

@@ -39,22 +39,24 @@ if __name__ == '__main__':
         #if config.uiMode=='GUI':
         #    WeddingRegistryGUI.send_login_page()
         DB.populateWithTestData()
-        pprint(DB.getUnpurchasedGifts())
-        print(DB.purchaseItem(2, 3, 1))
-        pprint(DB.getUnpurchasedGifts())
-        print(DB.validateUser('admin', 'badPasword'))
-        print(DB.validateUser('admin', 'badPaswor'))
-        print(DB.validateUser('giftEditor', 'IWillTellLiesForPi'))
-        print(DB.validateUser('giftEditor', 'IWiliesForPi'))
-        print(DB.getPrivLevel(1))
-        print(DB.getPrivLevel(3))
-        print(DB.addUser('testPassword', 'testUser', 2))
-        print(DB.addItem('Pathfinder core rulebook',
-            5,
-            2,
-            'https://smile.amazon.com/Pathfinder-Core-Rulebook-Jason-Bulmahn/dp/1640781684/',
-        ''))
-        pprint(DB.getUnpurchasedGifts())
+        # pprint(DB.getUnpurchasedGifts())
+        # print(DB.purchaseItem(2, 3, 1))
+        # pprint(DB.getUnpurchasedGifts())
+        # print(DB.validateUser('admin', 'badPasword'))
+        # print(DB.validateUser('admin', 'badPaswor'))
+        # print(DB.validateUser('giftEditor', 'IWillTellLiesForPi'))
+        # print(DB.validateUser('giftEditor', 'IWiliesForPi'))
+        # print(DB.getPrivLevel(1))
+        # print(DB.getPrivLevel(3))
+        # print(DB.addUser('testPassword', 'testUser', 2))
+        # print(DB.addItem('Pathfinder core rulebook',
+        #     5,
+        #     2,
+        #     'https://smile.amazon.com/Pathfinder-Core-Rulebook-Jason-Bulmahn/dp/1640781684/',
+        # ''))
+        # pprint(DB.getUnpurchasedGifts())
+        WeddingRegistryGUI.send_login_page(DB, config)
+
     finally:
         #this makes sure that the db connection is properly closed.
         DB.close()
