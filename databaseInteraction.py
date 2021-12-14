@@ -2,6 +2,7 @@
 import psycopg2
 import psycopg2.extras
 import logging
+import WeddingRegistryGUI as wrg
 
 class appDatabase:
     #if you dont need to set these, pass empty strings. Seems to work just fine.
@@ -27,7 +28,76 @@ class appDatabase:
             ''')
             self.conn.commit()
             return cur.fetchall()
+    def fitlerByName(self,name):
+         with self.cursor() as cur:
+            cur.execute('''
+                select * from (
+                select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
+                from items left join purchase on items.itemid=purchase.itemid
+                group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
+                order by priority
+                ) as getsum
+                where qtyleft>0 and name is like {name};
+            ''')
+            self.conn.commit()
+            return cur.fetchall()
+    def sortEntries(self,field,order):
+        enum_to_field={
+                1:"items.itemID",
+                2:"itemdesc",
+                3:"priority",
+                4:"qtyleft"
+            }
+        enum_to_order={
+                1:"asc",
+                2:"desc"
+            }
+        field_name=enum_to_field[field]
+        order_name=enum_to_order[order]
+        with self.cursor() as cur:
+            cur.execute('''
+                select * from (
+                select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
+                from items left join purchase on items.itemid=purchase.itemid
+                group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
+                order by {field_name} {order_name}
+                ) as getsum
+                where qtyleft>0 ;
+            ''')
+        self.conn.commit()
+        return cur.fetchall()
 
+    def filterByPriority(self,priority):
+        int_priority=int(priority)
+        with self.cursor() as cur:
+            cur.execute('''
+                select * from (
+                select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
+                from items left join purchase on items.itemid=purchase.itemid
+                group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
+                order by {field}
+                ) as getsum
+                where qtyleft>0 and priority <={priority};
+            ''')
+        self.conn.commit()
+        return cur.fetchall()
+
+    def filterByPrice(self,upper_price,lower_price):
+        int_upper=int(upper_price)
+        int_lower=int(lower_price)
+
+        with self.cursor() as cur:
+            cur.execute('''
+                select * from (
+                select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
+                from items left join purchase on items.itemid=purchase.itemid
+                group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
+                order by priority
+                ) as getsum
+                where qtyleft>0 and price is like {name};
+            ''')
+            self.conn.commit()
+            return cur.fetchall()
     #returns purchaseID
     def purchaseItem(self, itemID, userID, qtyPurchased):
         with self.cursor() as cur:
