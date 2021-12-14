@@ -4,6 +4,8 @@ import psycopg2.extras
 import logging
 import WeddingRegistryGUI as wrg
 
+logging.basicConfig(format='%(asctime)s:%(message)s', level=logging.DEBUG)
+
 class appDatabase:
     #if you dont need to set these, pass empty strings. Seems to work just fine.
     def __init__(self, host, name, user, password, port):

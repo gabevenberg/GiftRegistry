@@ -55,6 +55,7 @@ if __name__ == '__main__':
         #     'https://smile.amazon.com/Pathfinder-Core-Rulebook-Jason-Bulmahn/dp/1640781684/',
         # ''))
         # pprint(DB.getUnpurchasedGifts())
+        logging.debug('calling login page')
         WeddingRegistryGUI.send_login_page(DB, config)
 
     finally:
