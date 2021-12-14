@@ -39,8 +39,8 @@ class appDatabase:
                 group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
                 order by priority
                 ) as getsum
-                where qtyleft>0 and name is like {name};
-            ''')
+                where qtyleft>0 and itemdesc like %s;
+            ''', (name,))
             self.conn.commit()
             return cur.fetchall()
     def sortEntries(self,field,order):
@@ -62,10 +62,10 @@ class appDatabase:
                 select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
                 from items left join purchase on items.itemid=purchase.itemid
                 group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
-                order by {field_name} {order_name}
+                order by %s asc
                 ) as getsum
                 where qtyleft>0 ;
-            ''')
+            ''' ,(field_name,))
         self.conn.commit()
         return cur.fetchall()
 
@@ -77,10 +77,9 @@ class appDatabase:
                 select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
                 from items left join purchase on items.itemid=purchase.itemid
                 group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
-                order by {field}
                 ) as getsum
-                where qtyleft>0 and priority <={priority};
-            ''')
+                where qtyleft>0 and priority <=%s;
+            ''', (priority,))
         self.conn.commit()
         return cur.fetchall()
 
@@ -96,8 +95,8 @@ class appDatabase:
                 group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
                 order by priority
                 ) as getsum
-                where qtyleft>0 and price is like {name};
-            ''')
+                where qtyleft>0 and price<=%s and price>=%s;
+            ''', (upper_price, lower_price,))
             self.conn.commit()
             return cur.fetchall()
     #returns purchaseID

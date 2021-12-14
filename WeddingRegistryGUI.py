@@ -39,24 +39,25 @@ def send_login_page(inDB, inconfig):
     top.mainloop()
 
 def filter_by_name(name:str):
+    logging.debug('filter_by_name called')
     data=DB.fitlerByName(name)
-    display(data)
+    display_page(data)
 def filter_by_priority(priority:int):
     data=DB.filterByPriority(priority)
-    display(data)
+    display_page(data)
 def filter_by_price(upper:int,lower:int):
     data=DB.filterByPrice(upper,lower)
-    display(data)
+    display_page(data)
 def sort_entries(field:Field,order:Order):
     data=DB.sortEntries(field,order)
-    display(data)
+    display_page(data)
 def attempt_login(username:str,password:str,errorOut:TK.Label,prevWind:TK):
     logging.debug('attempting login')
     if(authenticate_user(username,password)):
         logging.debug('login sucsessfull, destroying window')
         prevWind.destroy()
         logging.debug('calling displayPage')
-        display_page(DB.getUnpurchasedGifts)
+        display_page(DB.getUnpurchasedGifts())
     else:
         logging.debug('login failed')
         errorOut.config(text = "Incorrect username and/or password.", fg='#A33')
@@ -78,27 +79,28 @@ def display_purchase_page(items_purchased:list):
 def display_page(data):
     row_offset=5
     root=TK.Tk()
-    default_button=TK.Button(root,"Return to default filters",command=display_page(DB.getUnpurchasedGifts()))
+    # logging.debug('making default_button')
+    # default_button=TK.Button(root,"Return to default filters",command=display_page(DB.getUnpurchasedGifts()))
     checks=len(data)*[None]
     name_box=TK.Entry(root)
-    breakpoint()
-    name_button=TK.Button(root,text="Filter by Name",command=lambda:filter_by_name(name_box.get()))
+    logging.debug('calling filter_by_name')
+    name_button=TK.Button(root,text="Filter by Name",command=filter_by_name(name_box.get()))
 
     sort_box=TK.OptionMenu(root,"id","Fields",options=Field)
     order_box=TK.OptionMenu(root,"id","Order",options=Order)
-    breakpoint()
-    sort_button=TK.Button(root,text="Sort By Field",command=lambda:sort_entries(sort_box.get()))
+    logging.debug('calling sort_entries')
+    sort_button=TK.Button(root,text="Sort By Field",command=sort_entries(sort_box.get()))
     low_price_box=TK.Entry(root,text="Min price")
     low_price_box.insert(0,"Min price")
     upper_price_box=TK.Entry(root,text="Max price")
     upper_price_box.insert(0,"Max price")
-    breakpoint()
-    filter_price_button=TK.Button(root,text="Filter by Price",command=lambda:filter_by_price(upper_price_box.get(),low_price_box.get()))
+    logging.debug('calling filter_by_price')
+    filter_price_button=TK.Button(root,text="Filter by Price",command=filter_by_price(upper_price_box.get(),low_price_box.get()))
     priority_box=TK.Entry(root)
-    breakpoint()
-    priority_button=TK.Button(root,text="Filter by Minimum priority",command=lambda:filter_by_priority(priority_box.get()))
-    breakpoint()
-    purchase_button=TK.Button(root,text="Purchase Selected Item",command=lambda:display_purchase_page(filter(lambda x:x.value(),checks)))
+    logging.debug('calling filter_by_priority')
+    priority_button=TK.Button(root,text="Filter by Minimum priority",command=filter_by_priority(priority_box.get()))
+    logging.debug('calling display_purchase_page')
+    purchase_button=TK.Button(root,text="Purchase Selected Item",command=display_purchase_page(filter(lambda x:x.value(),checks)))
     name_box.grid(row=0,column=0)
     name_button.grid(row=0,column=1)
     sort_box.grid(row=1,column=0)
@@ -109,7 +111,7 @@ def display_page(data):
     priority_box.grid(row=3,column=0)
     priority_button.grid(row=3,column=1)
     purchase_button.grid(row=4,column=0)
-    breakpoint()
+    logging.debug('calling filter_by_name')
     #for each data item insert it into the grid
     for i in range(len(data)):      
             check=TK.Checkbutton(var=checks[i])
