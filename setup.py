@@ -39,7 +39,7 @@ if __name__ == '__main__':
         #if config.uiMode=='GUI':
         #    WeddingRegistryGUI.send_login_page()
         DB.populateWithTestData()
-        # pprint(DB.getUnpurchasedGifts())
+        pprint(DB.getUnpurchasedGifts())
         # print(DB.purchaseItem(2, 3, 1))
         # pprint(DB.getUnpurchasedGifts())
         # print(DB.validateUser('admin', 'badPasword'))

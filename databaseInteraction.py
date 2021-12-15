@@ -101,6 +101,8 @@ class appDatabase:
             return cur.fetchall()
     #returns purchaseID
     def purchaseItem(self, itemID, userID, qtyPurchased):
+        if qtyPurchased<=0:
+            raise ValueError('qtyPurchased must be above 0')
         with self.cursor() as cur:
             cur.execute('''
                 insert into purchase (itemID, userID, QTYpurchased, datePurchased)
