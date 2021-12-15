@@ -1,3 +1,5 @@
+#config for my DB and stuff
+config.json
 # visual studio stuff
 .vs/
 # Byte-compiled / optimized / DLL files
