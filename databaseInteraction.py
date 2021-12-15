@@ -28,7 +28,17 @@ class appDatabase:
                 ) as getsum
                 where qtyleft>0;
             ''')
-            self.conn.commit()
+            return cur.fetchall()
+    def filterByPriority(self,priority):
+        with self.cursor() as cur:
+            cur.execute('''
+                select * from (
+                select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
+                from items left join purchase on items.itemid=purchase.itemid
+                group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
+                ) as getsum
+                where qtyleft>0 and priority <=%s;
+            ''', (str(int(priority)),))
             return cur.fetchall()
     def fitlerByName(self,name):
          with self.cursor() as cur:
@@ -41,8 +51,8 @@ class appDatabase:
                 ) as getsum
                 where qtyleft>0 and upper(itemdesc) like %s||upper(%s)||%s;
             ''', ('%',name,'%',))
-            self.conn.commit()
             return cur.fetchall()
+
     def sortEntries(self,field,order):
         enum_to_field={
                 1:"items.itemID",
@@ -66,22 +76,7 @@ class appDatabase:
                 ) as getsum
                 where qtyleft>0 ;
             ''' ,(field_name,))
-        self.conn.commit()
-        return cur.fetchall()
-
-    def filterByPriority(self,priority):
-        int_priority=int(priority)
-        with self.cursor() as cur:
-            cur.execute('''
-                select * from (
-                select items.itemID, itemdesc, priority, (qtydesired - coalesce(sum(qtypurchased),0)) as qtyleft, thumbnail, purchaselink
-                from items left join purchase on items.itemid=purchase.itemid
-                group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
-                ) as getsum
-                where qtyleft>0 and priority <=%s;
-            ''', (priority,))
-        self.conn.commit()
-        return cur.fetchall()
+            return cur.fetchall()
 
     def filterByPrice(self,upper_price,lower_price):
         int_upper=int(upper_price)
@@ -97,12 +92,12 @@ class appDatabase:
                 ) as getsum
                 where qtyleft>0 and price<=%s and price>=%s;
             ''', (upper_price, lower_price,))
-            self.conn.commit()
             return cur.fetchall()
     #returns purchaseID
     def purchaseItem(self, itemID, userID, qtyPurchased):
         if qtyPurchased<=0:
             raise ValueError('qtyPurchased must be above 0')
+        #TODO qtyPurchased must be less than or equal to the remaining amount desired
         with self.cursor() as cur:
             cur.execute('''
                 insert into purchase (itemID, userID, QTYpurchased, datePurchased)

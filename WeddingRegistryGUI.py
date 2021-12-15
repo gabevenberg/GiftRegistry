@@ -88,7 +88,6 @@ def display_page(data):
     root=TK.Tk()
     # logging.debug('making default_button')
     # default_button=TK.Button(root,"Return to default filters",command=display_page(DB.getUnpurchasedGifts()))
-    checks=len(data)*[None]
     name_box=TK.Entry(root)
     logging.debug('calling filter_by_name')
     name_button=TK.Button(root,text="Filter by Name",command=partial(filter_by_name, name_box.get, root))
@@ -104,7 +103,7 @@ def display_page(data):
     filter_price_button=TK.Button(root,text="Filter by Price",command=partial(filter_by_price,upper_price_box.get,low_price_box.get, root))
     priority_box=TK.Entry(root)
     logging.debug('calling filter_by_priority')
-    priority_button=TK.Button(root,text="Filter by Minimum priority",command=partial(filter_by_priority,priority_box.get, root))
+    priority_button=TK.Button(root,text="Filter by Priority",command=partial(filter_by_priority,priority_box.get, root)) #TODO clearer button text for filtering to lower numbers which indicate higher priority
     logging.debug('calling display_purchase_page')
     # purchase_button=TK.Button(root,text="Purchase Selected Item",command=display_purchase_page((lambda x:x.value(),checks)))
     
@@ -118,7 +117,7 @@ def display_page(data):
     # upper_price_box.grid(row=0,column=2)
     # filter_price_button.grid(row=2,column=2)
 
-    sort_box.grid(row=1,column=3)
+    # sort_box.grid(row=1,column=3)
     # sort_button.grid(row=2,column=3)
     
     # purchase_button.grid(row=4,column=0)
