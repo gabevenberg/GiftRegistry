@@ -70,7 +70,7 @@ def attempt_login(username:str,password:str,errorOut:TK.Label,prevWind:TK):
         errorOut.config(text = "Incorrect username and/or password.", fg='#A33')
 
 def authenticate_user(username:str,password:str):
-    return True
+    return DB.validateUser(username, password)[0]
     #raise NotImplementedError
 
 def display_purchase_page(items_purchased:list):

@@ -116,7 +116,7 @@ class appDatabase:
             ''', (password, username))
             res=cur.fetchone()
             self.conn.commit()
-            return res.verified, res.userid
+            return (False, -1) if res==None else (res.verified, res.userid)
 
     #returns integer detailing users privLevel.
     def getPrivLevel(self, userID):
