@@ -39,8 +39,8 @@ class appDatabase:
                 group by items.itemID, itemdesc, priority, qtydesired, purchaselink, thumbnail
                 order by priority
                 ) as getsum
-                where qtyleft>0 and itemdesc like %s;
-            ''', (name,))
+                where qtyleft>0 and upper(itemdesc) like %s||upper(%s)||%s;
+            ''', ('%',name,'%',))
             self.conn.commit()
             return cur.fetchall()
     def sortEntries(self,field,order):

@@ -41,22 +41,22 @@ def send_login_page(inDB, inconfig):
     error_label.pack()
     top.mainloop()
 
-def filter_by_name(name:str,root:TK.Tk):
+def filter_by_name(name,root:TK.Tk):
+    data=DB.fitlerByName(name())
     root.destroy()
-    logging.debug('filter_by_name called')
-    data=DB.fitlerByName(name)
     display_page(data)
-def filter_by_priority(priority:int,root:TK.Tk):
+def filter_by_priority(priority,root:TK.Tk):
+    logging.debug('prioFilter '+priority())
+    data=DB.filterByPriority(priority())
     root.destroy()
-    data=DB.filterByPriority(priority)
     display_page(data)
-def filter_by_price(upper:int,lower:int,root:TK.Tk):
+def filter_by_price(upper,lower,root:TK.Tk):
+    data=DB.filterByPrice(upper(),lower())
     root.destroy()
-    data=DB.filterByPrice(upper,lower)
     display_page(data)
 def sort_entries(field:Field,order:Order,root:TK.Tk):
-    root.destroy()
     data=DB.sortEntries(field,order)
+    root.destroy()
     display_page(data)
 def attempt_login(username:str,password:str,errorOut:TK.Label,prevWind:TK):
     logging.debug('attempting login')
@@ -91,7 +91,7 @@ def display_page(data):
     checks=len(data)*[None]
     name_box=TK.Entry(root)
     logging.debug('calling filter_by_name')
-    name_button=TK.Button(root,text="Filter by Name",command=partial(filter_by_name, name_box.get(), root))
+    name_button=TK.Button(root,text="Filter by Name",command=partial(filter_by_name, name_box.get, root))
     sort_box=TK.OptionMenu(root,"id","Fields",*[x.name for x in Field])
     order_box=TK.OptionMenu(root,"id","Order",*[x.name for x in Order])
     logging.debug('calling sort_entries')
@@ -101,10 +101,10 @@ def display_page(data):
     upper_price_box=TK.Entry(root,text="Max price")
     upper_price_box.insert(0,"Max price")
     logging.debug('calling filter_by_price')
-    filter_price_button=TK.Button(root,text="Filter by Price",command=partial(filter_by_price,upper_price_box.get(),low_price_box.get(), root))
+    filter_price_button=TK.Button(root,text="Filter by Price",command=partial(filter_by_price,upper_price_box.get,low_price_box.get, root))
     priority_box=TK.Entry(root)
     logging.debug('calling filter_by_priority')
-    priority_button=TK.Button(root,text="Filter by Minimum priority",command=partial(filter_by_priority,priority_box.get(), root))
+    priority_button=TK.Button(root,text="Filter by Minimum priority",command=partial(filter_by_priority,priority_box.get, root))
     logging.debug('calling display_purchase_page')
     # purchase_button=TK.Button(root,text="Purchase Selected Item",command=display_purchase_page((lambda x:x.value(),checks)))
     
@@ -114,9 +114,9 @@ def display_page(data):
     priority_box.grid(row=1,column=1)
     priority_button.grid(row=2,column=1)
     
-    low_price_box.grid(row=1,column=2)
-    upper_price_box.grid(row=0,column=2)
-    filter_price_button.grid(row=2,column=2)
+    # low_price_box.grid(row=1,column=2)
+    # upper_price_box.grid(row=0,column=2)
+    # filter_price_button.grid(row=2,column=2)
 
     sort_box.grid(row=1,column=3)
     # sort_button.grid(row=2,column=3)
@@ -126,11 +126,11 @@ def display_page(data):
     #for each data item insert it into the grid
     logging.debug(f'data is {len(data)} long')
     descHeader=TK.Label(root, width=20, fg='black', font=('Arial',16,), text='Item')
-    descHeader.grid(row=row_offset, column=1)
+    descHeader.grid(row=row_offset-1, column=0)
     priorityHeader=TK.Label(root, width=20, fg='black', font=('Arial',16,), text='Preference')
-    priorityHeader.grid(row=row_offset, column=2)
+    priorityHeader.grid(row=row_offset-1, column=1)
     qtyHeader=TK.Label(root, width=20, fg='black', font=('Arial',16,), text='Quantity desired')
-    qtyHeader.grid(row=row_offset, column=3)
+    qtyHeader.grid(row=row_offset-1, column=2)
     for i in range(len(data)):      
         logging.debug(f'printing {data[i]}')
         desc = TK.Label(root, width=20, fg='black', font=('Arial',16,), text=data[i][1])
