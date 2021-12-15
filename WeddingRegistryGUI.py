@@ -41,17 +41,21 @@ def send_login_page(inDB, inconfig):
     error_label.pack()
     top.mainloop()
 
-def filter_by_name(name:str):
+def filter_by_name(name:str,root:TK.Tk):
+    root.destroy()
     logging.debug('filter_by_name called')
     data=DB.fitlerByName(name)
     display_page(data)
-def filter_by_priority(priority:int):
+def filter_by_priority(priority:int,root:TK.Tk):
+    root.destroy()
     data=DB.filterByPriority(priority)
     display_page(data)
-def filter_by_price(upper:int,lower:int):
+def filter_by_price(upper:int,lower:int,root:TK.Tk):
+    root.destroy()
     data=DB.filterByPrice(upper,lower)
     display_page(data)
-def sort_entries(field:Field,order:Order):
+def sort_entries(field:Field,order:Order,root:TK.Tk):
+    root.destroy()
     data=DB.sortEntries(field,order)
     display_page(data)
 def attempt_login(username:str,password:str,errorOut:TK.Label,prevWind:TK):
@@ -87,7 +91,7 @@ def display_page(data):
     checks=len(data)*[None]
     name_box=TK.Entry(root)
     logging.debug('calling filter_by_name')
-    name_button=TK.Button(root,text="Filter by Name",command=partial(filter_by_name, name_box.get()))
+    name_button=TK.Button(root,text="Filter by Name",command=partial(filter_by_name, name_box.get(), root))
     sort_box=TK.OptionMenu(root,"id","Fields",*[x.name for x in Field])
     order_box=TK.OptionMenu(root,"id","Order",*[x.name for x in Order])
     logging.debug('calling sort_entries')
@@ -97,21 +101,21 @@ def display_page(data):
     upper_price_box=TK.Entry(root,text="Max price")
     upper_price_box.insert(0,"Max price")
     logging.debug('calling filter_by_price')
-    filter_price_button=TK.Button(root,text="Filter by Price",command=partial(filter_by_price,upper_price_box.get(),low_price_box.get()))
+    filter_price_button=TK.Button(root,text="Filter by Price",command=partial(filter_by_price,upper_price_box.get(),low_price_box.get(), root))
     priority_box=TK.Entry(root)
     logging.debug('calling filter_by_priority')
-    priority_button=TK.Button(root,text="Filter by Minimum priority",command=partial(filter_by_priority,priority_box.get()))
+    priority_button=TK.Button(root,text="Filter by Minimum priority",command=partial(filter_by_priority,priority_box.get(), root))
     logging.debug('calling display_purchase_page')
     # purchase_button=TK.Button(root,text="Purchase Selected Item",command=display_purchase_page((lambda x:x.value(),checks)))
-    name_box.grid(row=0,column=0)
-    name_button.grid(row=0,column=1)
-    sort_box.grid(row=1,column=0)
-    # sort_button.grid(row=1,column=1)
-    low_price_box.grid(row=2,column=0)
-    upper_price_box.grid(row=2,column=1)
+    name_box.grid(row=1,column=0)
+    name_button.grid(row=2,column=0)
+    sort_box.grid(row=1,column=1)
+    # sort_button.grid(row=2,column=1)
+    low_price_box.grid(row=1,column=2)
+    upper_price_box.grid(row=0,column=2)
     filter_price_button.grid(row=2,column=2)
-    priority_box.grid(row=3,column=0)
-    priority_button.grid(row=3,column=1)
+    priority_box.grid(row=1,column=3)
+    priority_button.grid(row=2,column=3)
     # purchase_button.grid(row=4,column=0)
     logging.debug('calling filter_by_name')
     #for each data item insert it into the grid
