@@ -31,7 +31,7 @@ def send_login_page(inDB, inconfig):
     password_label=TK.Label(top,text="password")
     error_label=TK.Label(top,text="")
     user_box=TK.Entry(top)
-    pass_box=TK.Entry(top)
+    pass_box=TK.Entry(top,show='*')
     button=TK.Button(top,text="login",command=lambda:attempt_login(user_box.get(),pass_box.get(),error_label,top))
     username_label.pack()
     user_box.pack()
