@@ -107,15 +107,20 @@ def display_page(data):
     priority_button=TK.Button(root,text="Filter by Minimum priority",command=partial(filter_by_priority,priority_box.get(), root))
     logging.debug('calling display_purchase_page')
     # purchase_button=TK.Button(root,text="Purchase Selected Item",command=display_purchase_page((lambda x:x.value(),checks)))
+    
     name_box.grid(row=1,column=0)
     name_button.grid(row=2,column=0)
-    sort_box.grid(row=1,column=1)
-    # sort_button.grid(row=2,column=1)
+
+    priority_box.grid(row=1,column=1)
+    priority_button.grid(row=2,column=1)
+    
     low_price_box.grid(row=1,column=2)
     upper_price_box.grid(row=0,column=2)
     filter_price_button.grid(row=2,column=2)
-    priority_box.grid(row=1,column=3)
-    priority_button.grid(row=2,column=3)
+
+    sort_box.grid(row=1,column=3)
+    # sort_button.grid(row=2,column=3)
+    
     # purchase_button.grid(row=4,column=0)
     logging.debug('calling filter_by_name')
     #for each data item insert it into the grid
