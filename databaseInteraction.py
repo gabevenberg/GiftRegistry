@@ -2,7 +2,6 @@
 import psycopg2
 import psycopg2.extras
 import logging
-import WeddingRegistryGUI as wrg
 
 logging.basicConfig(format='%(asctime)s:%(message)s', level=logging.DEBUG)
 
@@ -150,12 +149,10 @@ class appDatabase:
             logging.debug(f'inserted {itemDescription}, {priority}, {qtyDesired}, {purchaseLink}, {thumbnailPath} into items table')
             return cur.fetchone().itemid
 
-    #test function, please ignore
-    #NOTE will destroy your database!!! used only to reset to known state between tests.
-    def populateWithTestData(self):
+    def initDB(self):
         with self.cursor() as cur:
             cur.execute('''
-                --SQL script for creating test data.
+                --Create inital database.
 
                 drop table if exists items cascade;
                 drop table if exists users cascade;
@@ -188,20 +185,22 @@ class appDatabase:
                     constraint itemid_record foreign key (itemID) references items (itemID)
                 );
 
-                --for assignment reqs, might move this into a config file later
-                create table if not exists setting(
-                    field varchar(64) primary key,
-                    value text
-                );
-
-                insert into setting(field, value) values
-                    ('usersCanSeeAlreadyPurchased', 'true'),
-                    ('theme', 'dark');
-
                 create extension if not exists pgcrypto;
 
                 insert into users (PWhash, username, privlevel) values
-                    (crypt('badPasword', gen_salt('bf')), 'admin', 0), --userID 1
+                    (crypt('badPasword', gen_salt('bf')), 'admin', 0); --userID 1
+            ''')
+            self.conn.commit()
+
+    #test function, please ignore
+    #NOTE will destroy your database!!! used only to reset to known state between tests.
+    def populateWithTestData(self):
+        self.initDB()
+        with self.cursor() as cur:
+            cur.execute('''
+                --SQL script for creating test data.
+
+                insert into users (PWhash, username, privlevel) values
                     (crypt('IWillTellLiesForPi', gen_salt('bf')), 'giftEditor', 1), --userID 2
                     (crypt('IAmAInlaw', gen_salt('bf')), 'giftBuyer', 100); --userID 3
 

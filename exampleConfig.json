@@ -4,5 +4,5 @@
 	"dbUser": "giftRegistry",
 	"dbPass": "",
 	"dbPort": "",
-	"uiMode": "GUI"
+	"uiMode": "CLI"
 }

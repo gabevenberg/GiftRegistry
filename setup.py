@@ -22,7 +22,6 @@ def read_config(configFile):
         return config
 
 if __name__ == '__main__':
-    import WeddingRegistryGUI
     from databaseInteraction import appDatabase
     configFile=parse_arguments()
     #I know global variables are discoraged, but these are the only two we will be using. (besides, these were technically already global, I just made it explicit.)
@@ -36,27 +35,23 @@ if __name__ == '__main__':
     )
     try:
         #rest of the program goes here.
-        #if config.uiMode=='GUI':
-        #    WeddingRegistryGUI.send_login_page()
         DB.populateWithTestData()
         pprint(DB.getUnpurchasedGifts())
-        # print(DB.purchaseItem(2, 3, 1))
-        # pprint(DB.getUnpurchasedGifts())
-        # print(DB.validateUser('admin', 'badPasword'))
-        # print(DB.validateUser('admin', 'badPaswor'))
-        # print(DB.validateUser('giftEditor', 'IWillTellLiesForPi'))
-        # print(DB.validateUser('giftEditor', 'IWiliesForPi'))
-        # print(DB.getPrivLevel(1))
-        # print(DB.getPrivLevel(3))
-        # print(DB.addUser('testPassword', 'testUser', 2))
-        # print(DB.addItem('Pathfinder core rulebook',
-        #     5,
-        #     2,
-        #     'https://smile.amazon.com/Pathfinder-Core-Rulebook-Jason-Bulmahn/dp/1640781684/',
-        # ''))
-        # pprint(DB.getUnpurchasedGifts())
-        logging.debug('calling login page')
-        WeddingRegistryGUI.send_login_page(DB, config)
+        print(DB.purchaseItem(2, 3, 1))
+        pprint(DB.getUnpurchasedGifts())
+        print(DB.validateUser('admin', 'badPasword'))
+        print(DB.validateUser('admin', 'badPaswor'))
+        print(DB.validateUser('giftEditor', 'IWillTellLiesForPi'))
+        print(DB.validateUser('giftEditor', 'IWiliesForPi'))
+        print(DB.getPrivLevel(1))
+        print(DB.getPrivLevel(3))
+        print(DB.addUser('testPassword', 'testUser', 2))
+        print(DB.addItem('Pathfinder core rulebook',
+            5,
+            2,
+            'https://smile.amazon.com/Pathfinder-Core-Rulebook-Jason-Bulmahn/dp/1640781684/',
+        ''))
+        pprint(DB.getUnpurchasedGifts())
 
     finally:
         #this makes sure that the db connection is properly closed.
